@@ -184,7 +184,7 @@ func (b *FilterRequestBuilder) Not() *FilterRequestBuilder {
 	return b
 }
 
-func (b *FilterRequestBuilder) Order(column string, ascending bool) {
+func (b *FilterRequestBuilder) Order(column string, ascending bool) *FilterRequestBuilder {
 	var query string
 	if ascending {
 		query = fmt.Sprintf("%s(%s).asc", b.table, column)
@@ -192,6 +192,7 @@ func (b *FilterRequestBuilder) Order(column string, ascending bool) {
 		query = fmt.Sprintf("%s(%s).desc", b.table, column)
 	}
 	b.params.Add("order", query)
+	return b
 }
 
 func (b *FilterRequestBuilder) Filter(column, operator, criteria string) *FilterRequestBuilder {
