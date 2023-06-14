@@ -27,7 +27,6 @@ func (rq *RequestError) Error() string {
 type RequestBuilder struct {
 	client *Client
 	path   string
-	table  string
 	params url.Values
 	header http.Header
 }
@@ -40,7 +39,6 @@ func (b *RequestBuilder) Select(columns ...string) *SelectRequestBuilder {
 				client:     b.client,
 				path:       b.path,
 				httpMethod: "GET",
-				table:      b.table,
 				header:     b.header,
 				params:     b.params,
 			},
@@ -55,7 +53,6 @@ func (b *RequestBuilder) Insert(json interface{}) *QueryRequestBuilder {
 		client:     b.client,
 		path:       b.path,
 		httpMethod: http.MethodPost,
-		table:      b.table,
 		json:       json,
 		params:     b.params,
 		header:     b.header,
@@ -68,7 +65,6 @@ func (b *RequestBuilder) Upsert(json interface{}) *QueryRequestBuilder {
 		client:     b.client,
 		path:       b.path,
 		httpMethod: http.MethodPost,
-		table:      b.table,
 		json:       json,
 		params:     b.params,
 		header:     b.header,
@@ -82,7 +78,6 @@ func (b *RequestBuilder) Update(json interface{}) *FilterRequestBuilder {
 			client:     b.client,
 			path:       b.path,
 			httpMethod: http.MethodPatch,
-			table:      b.table,
 			json:       json,
 			params:     b.params,
 			header:     b.header,
@@ -97,7 +92,6 @@ func (b *RequestBuilder) Delete() *FilterRequestBuilder {
 			client:     b.client,
 			path:       b.path,
 			httpMethod: http.MethodDelete,
-			table:      b.table,
 			json:       nil,
 			params:     b.params,
 			header:     b.header,
@@ -187,9 +181,9 @@ func (b *FilterRequestBuilder) Not() *FilterRequestBuilder {
 func (b *FilterRequestBuilder) Order(column string, ascending bool) *FilterRequestBuilder {
 	var query string
 	if ascending {
-		query = fmt.Sprintf("%s(%s).asc", b.table, column)
+		query = fmt.Sprintf("%s.asc", column)
 	} else {
-		query = fmt.Sprintf("%s(%s).desc", b.table, column)
+		query = fmt.Sprintf("%s.desc", column)
 	}
 	b.params.Add("order", query)
 	return b
