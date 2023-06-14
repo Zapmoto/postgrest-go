@@ -50,6 +50,7 @@ func (c *Client) From(table string) *RequestBuilder {
 	return &RequestBuilder{
 		client: c,
 		path:   "/" + table,
+		table:  table,
 		header: http.Header{},
 		params: url.Values{},
 	}
